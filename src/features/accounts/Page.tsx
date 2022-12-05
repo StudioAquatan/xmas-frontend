@@ -8,28 +8,13 @@ export const AccountsPage = () => {
   return (
     <React.Suspense fallback={<Loading />}>
       <section>
-        <Card>
-          <CardHeader>
-            <Heading as='h3' size='md'>
-              Logged in as
-            </Heading>
-          </CardHeader>
-          <CardBody>
-            <SelfProfile />
-          </CardBody>
-        </Card>
+        <SelfProfile />
       </section>
       <section>
-        <Card>
-          <CardHeader>
-            <Heading as='h3' size='md'>
-              Account List
-            </Heading>
-          </CardHeader>
-          <CardBody>
-            <AllAccounts />
-          </CardBody>
-        </Card>
+        <Heading as='h3' size='md' margin='1.5'>
+          Account List
+        </Heading>
+        <AllAccounts />
       </section>
     </React.Suspense>
   );

@@ -3,4 +3,6 @@ export interface UserProfileData {
   screenName: string;
   displayName: string;
   iconUrl: string;
+  webhookActivated: boolean;
+  useStream: boolean;
 }

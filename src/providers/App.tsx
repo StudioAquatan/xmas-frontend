@@ -1,5 +1,3 @@
-/// <reference types="vite/client" />
-
 import {
   Alert,
   AlertDescription,
@@ -11,6 +9,7 @@ import {
 import React from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { SWRConfig, Fetcher } from 'swr';
+import { fetchJson } from '../lib/fetch';
 
 const ErrorFallback: React.FC<FallbackProps> = ({ error }) => {
   return (
@@ -24,16 +23,10 @@ const ErrorFallback: React.FC<FallbackProps> = ({ error }) => {
   );
 };
 
-const apiRoot = `${import.meta.env.VITE_API_ROOT ?? ''}`;
 const fetcher: Fetcher<unknown, [string, RequestInit | undefined]> = (
   resource,
   init
-) =>
-  fetch(`${apiRoot}${resource}`, {
-    ...init,
-    credentials: 'include',
-  }).then((res) => res.json());
-
+) => fetchJson(resource, init);
 export const AppProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
