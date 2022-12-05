@@ -4,9 +4,12 @@ import {
   Heading,
   Tab,
   TabList,
+  TabPanel,
+  TabPanels,
   Tabs,
 } from '@chakra-ui/react';
 import * as React from 'react';
+import { AccountsPage } from './features/accounts';
 
 export const App: React.FC = () => {
   return (
@@ -21,6 +24,12 @@ export const App: React.FC = () => {
           <Tab>Monitors</Tab>
           <Tab>Rules</Tab>
         </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <AccountsPage />
+          </TabPanel>
+        </TabPanels>
       </Tabs>
     </Container>
   );
