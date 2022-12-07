@@ -1,6 +1,6 @@
 import { Avatar, Box, Flex, Heading, Text } from '@chakra-ui/react';
 import React from 'react';
-import { UserProfileData } from '../types';
+import { UserProfileData } from '..';
 
 export const UserProfile: React.FC<{ user: UserProfileData }> = ({ user }) => {
   return (

@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { fetchApi } from '../../lib/fetch';
-import { UserProfileData } from './types';
+import { UserProfileData } from '.';
 
 export const useAccountList = () => {
   return useSWR<UserProfileData[]>('/api/twitter/accounts');

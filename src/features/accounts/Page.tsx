@@ -1,8 +1,7 @@
-import { Card, CardBody, CardHeader, Heading } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import React from 'react';
 import { Loading } from '../../components/Loading';
-import { AllAccounts } from './components/AllAccounts';
-import { SelfProfile } from './components/SelfProfile';
+import { AllAccounts, SelfProfile } from '.';
 
 export const AccountsPage = () => {
   return (
