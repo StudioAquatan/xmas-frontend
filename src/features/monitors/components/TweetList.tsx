@@ -1,5 +1,7 @@
 import {
   Button,
+  Checkbox,
+  CheckboxGroup,
   Link,
   Table,
   TableContainer,
@@ -12,42 +14,52 @@ import {
 import React from 'react';
 import { useTweetMonitors } from '..';
 
-export const TweetList = () => {
+interface Props {
+  onSelect?: (tweetIds: string[]) => unknown;
+}
+
+export const TweetList = ({ onSelect }: Props) => {
   const { data } = useTweetMonitors();
 
   return (
     <TableContainer>
-      <Table>
-        <Thead>
-          <Th>Tweet ID</Th>
-          <Th isNumeric>Likes</Th>
-          <Th isNumeric>Retweets</Th>
-          <Th isNumeric>Reply</Th>
-          <Th>Op.</Th>
-        </Thead>
-        <Tbody>
-          {data?.map(({ tweetId, favCount, retweetCount, replyCount }) => (
-            <Tr key={tweetId}>
-              <Td>
-                <Link
-                  href={`https://twitter.com/jack/status/${tweetId}`}
-                  isExternal
-                >
-                  {tweetId}
-                </Link>
-              </Td>
-              <Td isNumeric>{favCount}</Td>
-              <Td isNumeric>{retweetCount}</Td>
-              <Td isNumeric>{replyCount}</Td>
-              <Td>
-                <Button colorScheme='red' size='sm'>
-                  Delete
-                </Button>
-              </Td>
+      <CheckboxGroup onChange={onSelect}>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>Tweet ID</Th>
+              <Th isNumeric>Likes</Th>
+              <Th isNumeric>Retweets</Th>
+              <Th isNumeric>Reply</Th>
+              <Th>Op.</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {data?.map(({ tweetId, favCount, retweetCount, replyCount }) => (
+              <Tr key={tweetId}>
+                <Td>
+                  <Checkbox value={tweetId}>
+                    <Link
+                      href={`https://twitter.com/jack/status/${tweetId}`}
+                      isExternal
+                    >
+                      {tweetId}
+                    </Link>
+                  </Checkbox>
+                </Td>
+                <Td isNumeric>{favCount}</Td>
+                <Td isNumeric>{retweetCount}</Td>
+                <Td isNumeric>{replyCount}</Td>
+                <Td>
+                  <Button colorScheme='red' size='sm'>
+                    Delete
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </CheckboxGroup>
     </TableContainer>
   );
 };
