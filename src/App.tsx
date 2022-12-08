@@ -9,7 +9,10 @@ import {
   Tabs,
 } from '@chakra-ui/react';
 import * as React from 'react';
+import { ActivateRangeSlider } from './components/ActivateRangeSlider';
+import { TweetSelector } from './components/TweetSelector';
 import { AccountsPage } from './features/accounts';
+import { TweetMonitorsPage } from './features/monitors';
 
 export const App: React.FC = () => {
   return (
@@ -28,6 +31,12 @@ export const App: React.FC = () => {
         <TabPanels>
           <TabPanel>
             <AccountsPage />
+          </TabPanel>
+          <TabPanel>
+            <TweetSelector />
+          </TabPanel>
+          <TabPanel>
+            <TweetMonitorsPage />
           </TabPanel>
         </TabPanels>
       </Tabs>
