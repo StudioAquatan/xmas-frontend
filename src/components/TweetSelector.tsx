@@ -9,7 +9,11 @@ import React from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { extractTweetId } from '../lib/twitter';
 
-export const TweetSelector = () => {
+interface Props {
+  onChange: (tweetId: string) => unknown;
+}
+
+export const TweetSelector = ({ onChange }: Props) => {
   const [url, setUrl] = React.useState('');
   const deferredUrl = React.useDeferredValue(url);
   const tweetId = React.useMemo(
@@ -17,9 +21,13 @@ export const TweetSelector = () => {
     [deferredUrl]
   );
   const [loaded, setLoaded] = React.useState(false);
+  const [showPreview, setShowPreview] = React.useState(false);
 
   React.useEffect(() => {
+    setShowPreview(false);
     setLoaded(false);
+    onChange(tweetId!);
+    setTimeout(() => setShowPreview(true), 0);
   }, [tweetId]);
   return (
     <Box>
@@ -33,7 +41,7 @@ export const TweetSelector = () => {
           {tweetId && !loaded && <Spinner />}
         </InputRightElement>
       </InputGroup>
-      {tweetId && (
+      {tweetId && showPreview && (
         <TwitterTweetEmbed tweetId={tweetId} onLoad={() => setLoaded(true)} />
       )}
     </Box>
