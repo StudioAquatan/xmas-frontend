@@ -28,3 +28,12 @@ export interface HashtagMonitor {
 export const useHashtagMonitors = () => {
   return useSWR<HashtagMonitor[]>('/api/twitter/monitor/hashtag');
 };
+
+export const addMonitorHashtag = async (hashtag: string) => {
+  const res = await fetchApi(`/api/twitter/monitor/hashtag`, {
+    method: 'PUT',
+    body: JSON.stringify({ hashtag }),
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!res.ok) throw new Error('Operation failed');
+};
