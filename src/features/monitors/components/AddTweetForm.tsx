@@ -1,8 +1,8 @@
 import { Button, Box } from '@chakra-ui/react';
 import React from 'react';
 import { mutate } from 'swr';
+import { addMonitorTweet } from '..';
 import { TweetSelector } from '../../../components/TweetSelector';
-import { addMonitorTweet } from '../api';
 
 export const AddTweetForm = () => {
   const [loading, setLoading] = React.useState(false);
