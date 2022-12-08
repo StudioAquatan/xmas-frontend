@@ -18,3 +18,13 @@ export const addMonitorTweet = async (id: string) => {
   });
   if (!res.ok) throw new Error('Operation failed');
 };
+
+export interface HashtagMonitor {
+  id: number;
+  hashtag: string;
+  count: number;
+}
+
+export const useHashtagMonitors = () => {
+  return useSWR<HashtagMonitor[]>('/api/twitter/monitor/hashtag');
+};
