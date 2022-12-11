@@ -13,33 +13,67 @@ import { Loading } from '../../../components/Loading';
 import { HashtagList, TweetList } from '../../monitors';
 import { Rule, RuleEventType } from '../api';
 
+export type PartialProps = Pick<
+  Rule,
+  'event' | 'eventTweets' | 'eventHashtags'
+>;
 interface Props {
-  onChange?: (
-    partialRule: Pick<Rule, 'event' | 'eventTweets' | 'eventHashtags'>
-  ) => unknown;
+  onChange: (partialRule: PartialProps) => unknown;
+  value: PartialProps;
 }
 
-export const RuleEventSelector = ({ onChange }: Props) => {
-  const [tweetIds, setTweetIds] = React.useState<string[]>([]);
-  const [eventType, setType] = React.useState<RuleEventType>('none');
-  const [hashtagIds, setHashtagIds] = React.useState<number[]>([]);
+export const getEventText = ({
+  event,
+  eventTweets,
+  eventHashtags,
+}: PartialProps) => {
+  switch (event) {
+    case 'none':
+      return 'Always';
+    case 'fav':
+      return `Likes of ${eventTweets?.length ?? 0} tweets`;
+    case 'retweet':
+      return `Retweet of ${eventTweets?.length ?? 0} tweets`;
+    case 'reply':
+      return `Reply count of ${eventTweets?.length ?? 0} tweets`;
+    case 'hashtag':
+      return `Hashtag count of ${eventHashtags?.length ?? 0} tags`;
+  }
+};
 
+export const RuleEventSelector = ({ onChange, value }: Props) => {
   const handleTabChange = (index: number) => {
-    if (index === 0) setType('none');
-    else if (index === 1) setType('fav');
-    else setType('hashtag');
-
-    setTweetIds([]);
-    setHashtagIds([]);
+    onChange({
+      ...value,
+      event: ['none', 'fav', 'hashtag'][index] as RuleEventType,
+      eventHashtags: [],
+      eventTweets: [],
+    });
   };
 
-  React.useEffect(() => {
-    onChange?.({
-      event: eventType,
-      eventTweets: tweetIds,
-      eventHashtags: hashtagIds,
+  const handleRadioChange = (type: string) => {
+    onChange({
+      ...value,
+      event: type as RuleEventType,
+      eventHashtags: [],
     });
-  }, [eventType, tweetIds, hashtagIds]);
+  };
+
+  const handleTweetSelect = (ids: string[]) => {
+    onChange({
+      ...value,
+      eventHashtags: [],
+      eventTweets: ids,
+    });
+  };
+
+  const handleHashtagList = (ids: number[]) => {
+    onChange({
+      ...value,
+      eventHashtags: ids,
+      eventTweets: [],
+    });
+  };
 
   return (
     <Tabs variant='solid-rounded' onChange={handleTabChange}>
@@ -51,11 +85,7 @@ export const RuleEventSelector = ({ onChange }: Props) => {
       <TabPanels>
         <TabPanel />
         <TabPanel padding={1}>
-          <RadioGroup
-            onChange={(type) => setType(type as RuleEventType)}
-            value={eventType}
-            mx={3}
-          >
+          <RadioGroup onChange={handleRadioChange} value={value.event} mx={3}>
             <HStack spacing={3}>
               <Radio value='fav'>Like</Radio>
               <Radio value='retweet'>Retweet</Radio>
@@ -63,12 +93,18 @@ export const RuleEventSelector = ({ onChange }: Props) => {
             </HStack>
           </RadioGroup>
           <React.Suspense fallback={<Loading />}>
-            <TweetList tweetIds={tweetIds} onSelect={setTweetIds} />
+            <TweetList
+              tweetIds={value.eventTweets}
+              onSelect={handleTweetSelect}
+            />
           </React.Suspense>
         </TabPanel>
         <TabPanel padding={1}>
           <React.Suspense fallback={<Loading />}>
-            <HashtagList hashtagIds={hashtagIds} onSelect={setHashtagIds} />
+            <HashtagList
+              hashtagIds={value.eventHashtags}
+              onSelect={handleHashtagList}
+            />
           </React.Suspense>
         </TabPanel>
       </TabPanels>

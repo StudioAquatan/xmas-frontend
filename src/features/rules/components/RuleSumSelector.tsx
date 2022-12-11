@@ -4,23 +4,13 @@ import { Loading } from '../../../components/Loading';
 import { TweetList, HashtagList } from '../../monitors';
 import { Rule } from '../api';
 
+export type PartialProps = Pick<Rule, 'collectTweets' | 'collectHashtags'>;
 interface Props {
-  onChange?: (
-    partialRule: Pick<Rule, 'collectTweets' | 'collectHashtags'>
-  ) => unknown;
+  onChange: (partialRule: PartialProps) => unknown;
+  value: PartialProps;
 }
 
-export const RuleSumSelector = ({ onChange }: Props) => {
-  const [tweetIds, setTweetIds] = React.useState<string[]>([]);
-  const [hashtagIds, setHashtagIds] = React.useState<number[]>([]);
-
-  React.useEffect(() => {
-    onChange?.({
-      collectTweets: tweetIds,
-      collectHashtags: hashtagIds,
-    });
-  }, [tweetIds, hashtagIds]);
-
+export const RuleSumSelector = ({ onChange, value }: Props) => {
   return (
     <Tabs variant='enclosed'>
       <TabList>
@@ -30,12 +20,18 @@ export const RuleSumSelector = ({ onChange }: Props) => {
       <TabPanels>
         <TabPanel padding={1}>
           <React.Suspense fallback={<Loading />}>
-            <TweetList tweetIds={tweetIds} onSelect={setTweetIds} />
+            <TweetList
+              tweetIds={value.collectTweets}
+              onSelect={(ids) => onChange({ ...value, collectTweets: ids })}
+            />
           </React.Suspense>
         </TabPanel>
         <TabPanel padding={1}>
           <React.Suspense fallback={<Loading />}>
-            <HashtagList hashtagIds={hashtagIds} onSelect={setHashtagIds} />
+            <HashtagList
+              hashtagIds={value.collectHashtags}
+              onSelect={(ids) => onChange({ ...value, collectHashtags: ids })}
+            />
           </React.Suspense>
         </TabPanel>
       </TabPanels>

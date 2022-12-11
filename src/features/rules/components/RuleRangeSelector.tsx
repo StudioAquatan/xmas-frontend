@@ -23,37 +23,22 @@ interface PartialRule {
   maxSum: number | null;
 }
 interface Props {
-  onChange?: (partialRule: PartialRule) => unknown;
+  onChange: (partialRule: PartialRule) => unknown;
+  value: PartialRule;
   isDisabled?: boolean;
 }
 
-export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
-  const [rule, setRule] = React.useState<PartialRule>({
-    minFav: null,
-    maxFav: null,
-    minRetweet: null,
-    maxRetweet: null,
-    minReply: null,
-    maxReply: null,
-    minHashtag: null,
-    maxHashtag: null,
-    sumTarget: [],
-    minSum: null,
-    maxSum: null,
-  });
-  React.useEffect(() => {
-    onChange?.(rule);
-  }, [rule]);
+export const RuleRangeSelector = ({ onChange, value, isDisabled }: Props) => {
   return (
     <VStack spacing={3} align='stretch'>
       <FormControl>
         <FormLabel>Likes</FormLabel>
         <ActivateRangeSlider
           disabled={isDisabled}
-          value={[rule.minFav, rule.maxFav]}
+          value={[value.minFav, value.maxFav]}
           onChange={([min, max]) =>
-            setRule({
-              ...rule,
+            onChange({
+              ...value,
               minFav: min,
               maxFav: max,
             })
@@ -63,11 +48,11 @@ export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
       <FormControl>
         <FormLabel>Retweets</FormLabel>
         <ActivateRangeSlider
-          value={[rule.minRetweet, rule.maxRetweet]}
+          value={[value.minRetweet, value.maxRetweet]}
           disabled={isDisabled}
           onChange={([min, max]) =>
-            setRule({
-              ...rule,
+            onChange({
+              ...value,
               minRetweet: min,
               maxRetweet: max,
             })
@@ -77,11 +62,11 @@ export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
       <FormControl>
         <FormLabel>Reply</FormLabel>
         <ActivateRangeSlider
-          value={[rule.minReply, rule.maxReply]}
+          value={[value.minReply, value.maxReply]}
           disabled={isDisabled}
           onChange={([min, max]) =>
-            setRule({
-              ...rule,
+            onChange({
+              ...value,
               minReply: min,
               maxReply: max,
             })
@@ -91,11 +76,11 @@ export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
       <FormControl>
         <FormLabel>Sum</FormLabel>
         <CheckboxGroup
-          value={rule.sumTarget}
+          value={value.sumTarget}
           isDisabled={isDisabled}
           onChange={(target) =>
-            setRule({
-              ...rule,
+            onChange({
+              ...value,
               sumTarget: target as PartialRule['sumTarget'],
             })
           }
@@ -108,11 +93,11 @@ export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
           </HStack>
         </CheckboxGroup>
         <ActivateRangeSlider
-          disabled={rule.sumTarget.length === 0 || isDisabled}
-          value={[rule.minSum, rule.maxSum]}
+          disabled={value.sumTarget.length === 0 || isDisabled}
+          value={[value.minSum, value.maxSum]}
           onChange={([min, max]) =>
-            setRule({
-              ...rule,
+            onChange({
+              ...value,
               minSum: min,
               maxSum: max,
             })
