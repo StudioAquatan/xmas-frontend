@@ -16,10 +16,11 @@ import { useHashtagMonitors } from '..';
 
 interface Props {
   onSelect?: (hashtagIds: number[]) => unknown;
+  onDelete?: (hashtagId: number) => unknown;
   hashtagIds?: number[];
 }
 
-export const HashtagList = ({ onSelect, hashtagIds }: Props) => {
+export const HashtagList = ({ onSelect, onDelete, hashtagIds }: Props) => {
   const { data } = useHashtagMonitors();
 
   const handleOnChange = (ids: string[]) => {
@@ -37,7 +38,7 @@ export const HashtagList = ({ onSelect, hashtagIds }: Props) => {
             <Tr>
               <Th>Hashtag</Th>
               <Th isNumeric>Count</Th>
-              <Th>Op.</Th>
+              {onDelete && <Th>Op.</Th>}
             </Tr>
           </Thead>
           <Tbody>
@@ -54,11 +55,17 @@ export const HashtagList = ({ onSelect, hashtagIds }: Props) => {
                   </Checkbox>
                 </Td>
                 <Td isNumeric>{count}</Td>
-                <Td>
-                  <Button colorScheme='red' size='sm'>
-                    Delete
-                  </Button>
-                </Td>
+                {onDelete && (
+                  <Td>
+                    <Button
+                      colorScheme='red'
+                      size='sm'
+                      onClick={() => onDelete(id)}
+                    >
+                      Delete
+                    </Button>
+                  </Td>
+                )}
               </Tr>
             ))}
           </Tbody>

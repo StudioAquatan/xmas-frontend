@@ -16,10 +16,11 @@ import { useTweetMonitors } from '..';
 
 interface Props {
   onSelect?: (tweetIds: string[]) => unknown;
+  onDelete?: (tweetId: string) => unknown;
   tweetIds?: string[];
 }
 
-export const TweetList = ({ onSelect, tweetIds }: Props) => {
+export const TweetList = ({ onSelect, onDelete, tweetIds }: Props) => {
   const { data } = useTweetMonitors();
 
   return (
@@ -32,7 +33,7 @@ export const TweetList = ({ onSelect, tweetIds }: Props) => {
               <Th isNumeric>Likes</Th>
               <Th isNumeric>Retweets</Th>
               <Th isNumeric>Reply</Th>
-              <Th>Op.</Th>
+              {onDelete && <Th>Op.</Th>}
             </Tr>
           </Thead>
           <Tbody>
@@ -51,11 +52,17 @@ export const TweetList = ({ onSelect, tweetIds }: Props) => {
                 <Td isNumeric>{favCount}</Td>
                 <Td isNumeric>{retweetCount}</Td>
                 <Td isNumeric>{replyCount}</Td>
-                <Td>
-                  <Button colorScheme='red' size='sm'>
-                    Delete
-                  </Button>
-                </Td>
+                {onDelete && (
+                  <Td>
+                    <Button
+                      colorScheme='red'
+                      size='sm'
+                      onClick={() => onDelete(tweetId)}
+                    >
+                      Delete
+                    </Button>
+                  </Td>
+                )}
               </Tr>
             ))}
           </Tbody>
