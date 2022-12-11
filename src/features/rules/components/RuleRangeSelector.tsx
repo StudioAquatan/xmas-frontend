@@ -1,8 +1,8 @@
 import {
-  Box,
+  FormControl,
   Checkbox,
   CheckboxGroup,
-  Heading,
+  FormLabel,
   HStack,
   VStack,
 } from '@chakra-ui/react';
@@ -46,10 +46,8 @@ export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
   }, [rule]);
   return (
     <VStack spacing={3} align='stretch'>
-      <Box>
-        <Heading as='h4' size='md' mb={3}>
-          Likes
-        </Heading>
+      <FormControl>
+        <FormLabel>Likes</FormLabel>
         <ActivateRangeSlider
           disabled={isDisabled}
           value={[rule.minFav, rule.maxFav]}
@@ -61,11 +59,9 @@ export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
             })
           }
         />
-      </Box>
-      <Box>
-        <Heading as='h4' size='md' mb={3}>
-          Retweets
-        </Heading>
+      </FormControl>
+      <FormControl>
+        <FormLabel>Retweets</FormLabel>
         <ActivateRangeSlider
           value={[rule.minRetweet, rule.maxRetweet]}
           disabled={isDisabled}
@@ -77,11 +73,9 @@ export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
             })
           }
         />
-      </Box>
-      <Box>
-        <Heading as='h4' size='md' mb={3}>
-          Reply
-        </Heading>
+      </FormControl>
+      <FormControl>
+        <FormLabel>Reply</FormLabel>
         <ActivateRangeSlider
           value={[rule.minReply, rule.maxReply]}
           disabled={isDisabled}
@@ -93,11 +87,9 @@ export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
             })
           }
         />
-      </Box>
-      <Box>
-        <Heading as='h4' size='md' mb={3}>
-          Sum
-        </Heading>
+      </FormControl>
+      <FormControl>
+        <FormLabel>Sum</FormLabel>
         <CheckboxGroup
           value={rule.sumTarget}
           isDisabled={isDisabled}
@@ -126,7 +118,7 @@ export const RuleRangeSelector = ({ onChange, isDisabled }: Props) => {
             })
           }
         />
-      </Box>
+      </FormControl>
     </VStack>
   );
 };
