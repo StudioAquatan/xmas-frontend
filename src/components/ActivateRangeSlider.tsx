@@ -30,7 +30,7 @@ export const ActivateRangeSlider = ({
           onChange([e.target.checked ? min : null, high]);
         }}
       >
-        <Text minW='7'>{low?.toString()}</Text>
+        <Text minW='7'>{low?.toString() ?? '-'}</Text>
       </Checkbox>
       <RangeSlider
         defaultValue={[10, 30]}
@@ -44,16 +44,25 @@ export const ActivateRangeSlider = ({
         <RangeSliderTrack>
           <RangeSliderFilledTrack />
         </RangeSliderTrack>
-        {low !== null && <RangeSliderThumb boxSize={6} index={0} />}
-        {high !== null && <RangeSliderThumb boxSize={6} index={1} />}
+        <RangeSliderThumb
+          boxSize={4}
+          index={0}
+          visibility={low !== null ? 'visible' : 'hidden'}
+        />
+        <RangeSliderThumb
+          boxSize={4}
+          index={1}
+          visibility={high !== null ? 'visible' : 'hidden'}
+        />
       </RangeSlider>
       <Checkbox
         isChecked={high !== null}
         onChange={(e) => {
           onChange([low, e.target.checked ? max : null]);
         }}
+        ml='3'
       >
-        <Text minW='7'>{high?.toString()}</Text>
+        <Text minW='7'>{high?.toString() ?? '-'}</Text>
       </Checkbox>
     </Flex>
   );
