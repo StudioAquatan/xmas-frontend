@@ -11,6 +11,7 @@ import {
   sumRangeSelectorAtom,
   sumTypeSelectorAtom,
   sourceSelectorAtom,
+  resultAtom,
 } from './atoms';
 
 export const getEventText = ({
@@ -105,5 +106,14 @@ export const sourceTextSelector = selector({
     const { collectHashtags, collectTweets } = get(sourceSelectorAtom);
 
     return `${collectTweets.length} tweets / ${collectHashtags.length} tags`;
+  },
+});
+
+export const resultTextSelector = selector({
+  key: 'resultText',
+  get: ({ get }) => {
+    const { priority, targetPattern } = get(resultAtom);
+
+    return `To ${targetPattern} with ${priority} priority`;
   },
 });

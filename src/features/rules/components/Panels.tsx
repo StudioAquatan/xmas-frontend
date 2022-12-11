@@ -10,11 +10,13 @@ import { useRecoilValue } from 'recoil';
 import {
   eventTextSelector,
   rangeTextSelector,
+  resultTextSelector,
   sourceTextSelector,
 } from '../stores/text';
 import { RuleDataSourceSelector } from './RuleDataSourceSelector';
 import { RuleEventSelector } from './RuleEventSelector';
 import { RuleRangeSelector } from './RuleRangeSelector';
+import { RuleResultSelector } from './RuleResultSelector';
 
 const RuleEventHeader = () => {
   const eventText = useRecoilValue(eventTextSelector);
@@ -84,6 +86,30 @@ export const RuleRangePanel = () => {
       <RuleRangeHeader />
       <AccordionPanel pb={4}>
         <RuleRangeSelector />
+      </AccordionPanel>
+    </AccordionItem>
+  );
+};
+
+const RuleResultHeader = () => {
+  const resultText = useRecoilValue(resultTextSelector);
+  return (
+    <h3>
+      <AccordionButton>
+        <Box flex='1' textAlign='left'>
+          Result - {resultText}
+        </Box>
+        <AccordionIcon />
+      </AccordionButton>
+    </h3>
+  );
+};
+export const RuleResultPanel = () => {
+  return (
+    <AccordionItem>
+      <RuleResultHeader />
+      <AccordionPanel pb={4}>
+        <RuleResultSelector />
       </AccordionPanel>
     </AccordionItem>
   );
