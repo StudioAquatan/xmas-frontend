@@ -16,9 +16,10 @@ import { useHashtagMonitors } from '..';
 
 interface Props {
   onSelect?: (hashtagIds: number[]) => unknown;
+  hashtagIds?: number[];
 }
 
-export const HashtagList = ({ onSelect }: Props) => {
+export const HashtagList = ({ onSelect, hashtagIds }: Props) => {
   const { data } = useHashtagMonitors();
 
   const handleOnChange = (ids: string[]) => {
@@ -27,7 +28,10 @@ export const HashtagList = ({ onSelect }: Props) => {
 
   return (
     <TableContainer>
-      <CheckboxGroup onChange={handleOnChange}>
+      <CheckboxGroup
+        onChange={handleOnChange}
+        value={hashtagIds?.map((i) => i.toString())}
+      >
         <Table>
           <Thead>
             <Tr>

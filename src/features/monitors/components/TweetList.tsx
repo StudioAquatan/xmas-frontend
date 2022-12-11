@@ -16,14 +16,15 @@ import { useTweetMonitors } from '..';
 
 interface Props {
   onSelect?: (tweetIds: string[]) => unknown;
+  tweetIds?: string[];
 }
 
-export const TweetList = ({ onSelect }: Props) => {
+export const TweetList = ({ onSelect, tweetIds }: Props) => {
   const { data } = useTweetMonitors();
 
   return (
     <TableContainer>
-      <CheckboxGroup onChange={onSelect}>
+      <CheckboxGroup onChange={onSelect} value={tweetIds}>
         <Table>
           <Thead>
             <Tr>
