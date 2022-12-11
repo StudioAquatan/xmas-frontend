@@ -7,148 +7,113 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
+import { useRecoilState } from 'recoil';
 import { ActivateRangeSlider } from '../../../components/ActivateRangeSlider';
+import {
+  favRangeSelectorAtom,
+  replyRangeSelectorAtom,
+  retweetRangeSelectorAtom,
+  sumRangeSelectorAtom,
+  sumTypeSelectorAtom,
+} from '../stores/atoms';
 
-interface PartialRule {
-  minFav: number | null;
-  maxFav: number | null;
-  minRetweet: number | null;
-  maxRetweet: number | null;
-  minReply: number | null;
-  maxReply: number | null;
-  minHashtag: number | null;
-  maxHashtag: number | null;
-  sumTarget: Array<'fav' | 'retweet' | 'reply' | 'hashtag'>;
-  minSum: number | null;
-  maxSum: number | null;
-}
-interface Props {
-  onChange: (partialRule: PartialRule) => unknown;
-  value: PartialRule;
-  isDisabled?: boolean;
-}
-
-export const getRangeText = (rule: PartialRule) => {
-  const hasRange = (min: number | null, max: number | null) => {
-    return !(min === null && max === null);
-  };
-  const range = (min: number | null, max: number | null) => {
-    if (!hasRange(min, max)) {
-      return '-';
-    } else {
-      return `[${min ?? ''},${max ?? ''}]`;
-    }
-  };
-
-  const chunks = [''];
-  if (hasRange(rule.minFav, rule.maxFav)) {
-    chunks.push(`Fav: ${range(rule.minFav, rule.maxFav)}`);
-  }
-  if (hasRange(rule.minRetweet, rule.maxRetweet)) {
-    chunks.push(`RT: ${range(rule.minRetweet, rule.maxRetweet)}`);
-  }
-  if (hasRange(rule.minReply, rule.maxReply)) {
-    chunks.push(`Rp: ${range(rule.minReply, rule.maxReply)}`);
-  }
-  if (hasRange(rule.minHashtag, rule.maxHashtag)) {
-    chunks.push(`#: ${range(rule.minHashtag, rule.maxHashtag)}`);
-  }
-  if (rule.sumTarget.length > 0) {
-    const map: Record<'fav' | 'retweet' | 'reply' | 'hashtag', string> = {
-      fav: 'F',
-      retweet: 'RT',
-      reply: 'Rp',
-      hashtag: '#',
-    };
-    chunks.push(
-      `${rule.sumTarget.map((t) => map[t]).join('+')}: ${range(
-        rule.minSum,
-        rule.maxSum
-      )}`
-    );
-  }
-  if (chunks.length === 1) {
-    chunks.push('N/A');
-  }
-  return chunks.join(' ');
+const FavSlider = () => {
+  const [{ minFav, maxFav }, set] = useRecoilState(favRangeSelectorAtom);
+  return (
+    <FormControl>
+      <FormLabel>Likes</FormLabel>
+      <ActivateRangeSlider
+        value={[minFav, maxFav]}
+        onChange={([min, max]) =>
+          set({
+            minFav: min,
+            maxFav: max,
+          })
+        }
+      />
+    </FormControl>
+  );
 };
 
-export const RuleRangeSelector = ({ onChange, value, isDisabled }: Props) => {
+const RetweetSlider = () => {
+  const [{ minRetweet, maxRetweet }, set] = useRecoilState(
+    retweetRangeSelectorAtom
+  );
+  return (
+    <FormControl>
+      <FormLabel>Retweets</FormLabel>
+      <ActivateRangeSlider
+        value={[minRetweet, maxRetweet]}
+        onChange={([min, max]) =>
+          set({
+            minRetweet: min,
+            maxRetweet: max,
+          })
+        }
+      />
+    </FormControl>
+  );
+};
+
+const ReplySlider = () => {
+  const [{ minReply, maxReply }, set] = useRecoilState(replyRangeSelectorAtom);
+  return (
+    <FormControl>
+      <FormLabel>Reply</FormLabel>
+      <ActivateRangeSlider
+        value={[minReply, maxReply]}
+        onChange={([min, max]) =>
+          set({
+            minReply: min,
+            maxReply: max,
+          })
+        }
+      />
+    </FormControl>
+  );
+};
+
+const SumSlider = () => {
+  const [{ minSum, maxSum }, set] = useRecoilState(sumRangeSelectorAtom);
+  const [{ sumTarget }, setType] = useRecoilState(sumTypeSelectorAtom);
+  return (
+    <FormControl>
+      <FormLabel>Sum</FormLabel>
+      <CheckboxGroup
+        value={sumTarget}
+        onChange={(target) =>
+          setType({
+            sumTarget: target as typeof sumTarget,
+          })
+        }
+      >
+        <HStack spacing={3}>
+          <Checkbox value='fav'>Like</Checkbox>
+          <Checkbox value='retweet'>Retweet</Checkbox>
+          <Checkbox value='reply'>Reply</Checkbox>
+          <Checkbox value='hashtag'>Hashtag</Checkbox>
+        </HStack>
+      </CheckboxGroup>
+      <ActivateRangeSlider
+        disabled={sumTarget.length === 0}
+        value={[minSum, maxSum]}
+        onChange={([min, max]) =>
+          set({
+            minSum: min,
+            maxSum: max,
+          })
+        }
+      />
+    </FormControl>
+  );
+};
+export const RuleRangeSelector = () => {
   return (
     <VStack spacing={3} align='stretch'>
-      <FormControl>
-        <FormLabel>Likes</FormLabel>
-        <ActivateRangeSlider
-          disabled={isDisabled}
-          value={[value.minFav, value.maxFav]}
-          onChange={([min, max]) =>
-            onChange({
-              ...value,
-              minFav: min,
-              maxFav: max,
-            })
-          }
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel>Retweets</FormLabel>
-        <ActivateRangeSlider
-          value={[value.minRetweet, value.maxRetweet]}
-          disabled={isDisabled}
-          onChange={([min, max]) =>
-            onChange({
-              ...value,
-              minRetweet: min,
-              maxRetweet: max,
-            })
-          }
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel>Reply</FormLabel>
-        <ActivateRangeSlider
-          value={[value.minReply, value.maxReply]}
-          disabled={isDisabled}
-          onChange={([min, max]) =>
-            onChange({
-              ...value,
-              minReply: min,
-              maxReply: max,
-            })
-          }
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel>Sum</FormLabel>
-        <CheckboxGroup
-          value={value.sumTarget}
-          isDisabled={isDisabled}
-          onChange={(target) =>
-            onChange({
-              ...value,
-              sumTarget: target as PartialRule['sumTarget'],
-            })
-          }
-        >
-          <HStack spacing={3}>
-            <Checkbox value='fav'>Like</Checkbox>
-            <Checkbox value='retweet'>Retweet</Checkbox>
-            <Checkbox value='reply'>Reply</Checkbox>
-            <Checkbox value='hashtag'>Hashtag</Checkbox>
-          </HStack>
-        </CheckboxGroup>
-        <ActivateRangeSlider
-          disabled={value.sumTarget.length === 0 || isDisabled}
-          value={[value.minSum, value.maxSum]}
-          onChange={([min, max]) =>
-            onChange({
-              ...value,
-              minSum: min,
-              maxSum: max,
-            })
-          }
-        />
-      </FormControl>
+      <FavSlider />
+      <RetweetSlider />
+      <ReplySlider />
+      <SumSlider />
     </VStack>
   );
 };

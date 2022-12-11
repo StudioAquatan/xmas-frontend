@@ -1,16 +1,13 @@
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
 import React from 'react';
+import { useRecoilState } from 'recoil';
 import { Loading } from '../../../components/Loading';
 import { TweetList, HashtagList } from '../../monitors';
-import { Rule } from '../api';
+import { sourceSelectorAtom } from '../stores/atoms';
 
-export type PartialProps = Pick<Rule, 'collectTweets' | 'collectHashtags'>;
-interface Props {
-  onChange: (partialRule: PartialProps) => unknown;
-  value: PartialProps;
-}
-
-export const RuleSumSelector = ({ onChange, value }: Props) => {
+export const RuleDataSourceSelector = () => {
+  const [{ collectHashtags, collectTweets }, set] =
+    useRecoilState(sourceSelectorAtom);
   return (
     <Tabs variant='enclosed'>
       <TabList>
@@ -21,16 +18,16 @@ export const RuleSumSelector = ({ onChange, value }: Props) => {
         <TabPanel padding={1}>
           <React.Suspense fallback={<Loading />}>
             <TweetList
-              tweetIds={value.collectTweets}
-              onSelect={(ids) => onChange({ ...value, collectTweets: ids })}
+              tweetIds={collectTweets}
+              onSelect={(ids) => set({ collectHashtags, collectTweets: ids })}
             />
           </React.Suspense>
         </TabPanel>
         <TabPanel padding={1}>
           <React.Suspense fallback={<Loading />}>
             <HashtagList
-              hashtagIds={value.collectHashtags}
-              onSelect={(ids) => onChange({ ...value, collectHashtags: ids })}
+              hashtagIds={collectHashtags}
+              onSelect={(ids) => set({ collectTweets, collectHashtags: ids })}
             />
           </React.Suspense>
         </TabPanel>

@@ -9,67 +9,36 @@ import {
   Tabs,
 } from '@chakra-ui/react';
 import React from 'react';
+import { useRecoilState } from 'recoil';
 import { Loading } from '../../../components/Loading';
 import { HashtagList, TweetList } from '../../monitors';
-import { Rule, RuleEventType } from '../api';
+import { RuleEventType } from '../api';
+import { eventSelectorAtom, eventTypeAtom } from '../stores/atoms';
 
-export type PartialProps = Pick<
-  Rule,
-  'event' | 'eventTweets' | 'eventHashtags'
->;
-interface Props {
-  onChange: (partialRule: PartialProps) => unknown;
-  value: PartialProps;
-}
+export const RuleEventSelector = () => {
+  const [{ event: eventType }, setType] = useRecoilState(eventTypeAtom);
+  const [{ eventHashtags, eventTweets }, setEventSource] =
+    useRecoilState(eventSelectorAtom);
 
-export const getEventText = ({
-  event,
-  eventTweets,
-  eventHashtags,
-}: PartialProps) => {
-  switch (event) {
-    case 'none':
-      return 'Always';
-    case 'fav':
-      return `Likes of ${eventTweets?.length ?? 0} tweets`;
-    case 'retweet':
-      return `Retweet of ${eventTweets?.length ?? 0} tweets`;
-    case 'reply':
-      return `Reply count of ${eventTweets?.length ?? 0} tweets`;
-    case 'hashtag':
-      return `Hashtag count of ${eventHashtags?.length ?? 0} tags`;
-  }
-};
-
-export const RuleEventSelector = ({ onChange, value }: Props) => {
   const handleTabChange = (index: number) => {
-    onChange({
-      ...value,
-      event: ['none', 'fav', 'hashtag'][index] as RuleEventType,
-      eventHashtags: [],
-      eventTweets: [],
-    });
+    setType({ event: ['none', 'fav', 'hashtag'][index] as RuleEventType });
   };
 
   const handleRadioChange = (type: string) => {
-    onChange({
-      ...value,
+    setType({
       event: type as RuleEventType,
-      eventHashtags: [],
     });
   };
 
   const handleTweetSelect = (ids: string[]) => {
-    onChange({
-      ...value,
+    setEventSource({
       eventHashtags: [],
       eventTweets: ids,
     });
   };
 
   const handleHashtagList = (ids: number[]) => {
-    onChange({
-      ...value,
+    setEventSource({
       eventHashtags: ids,
       eventTweets: [],
     });
@@ -85,7 +54,7 @@ export const RuleEventSelector = ({ onChange, value }: Props) => {
       <TabPanels>
         <TabPanel />
         <TabPanel padding={1}>
-          <RadioGroup onChange={handleRadioChange} value={value.event} mx={3}>
+          <RadioGroup onChange={handleRadioChange} value={eventType} mx={3}>
             <HStack spacing={3}>
               <Radio value='fav'>Like</Radio>
               <Radio value='retweet'>Retweet</Radio>
@@ -93,16 +62,13 @@ export const RuleEventSelector = ({ onChange, value }: Props) => {
             </HStack>
           </RadioGroup>
           <React.Suspense fallback={<Loading />}>
-            <TweetList
-              tweetIds={value.eventTweets}
-              onSelect={handleTweetSelect}
-            />
+            <TweetList tweetIds={eventTweets} onSelect={handleTweetSelect} />
           </React.Suspense>
         </TabPanel>
         <TabPanel padding={1}>
           <React.Suspense fallback={<Loading />}>
             <HashtagList
-              hashtagIds={value.eventHashtags}
+              hashtagIds={eventHashtags}
               onSelect={handleHashtagList}
             />
           </React.Suspense>
