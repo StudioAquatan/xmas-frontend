@@ -14,6 +14,7 @@ interface Props {
   value: [number | null, number | null];
   min?: number;
   max?: number;
+  disabled?: boolean;
 }
 
 export const ActivateRangeSlider = ({
@@ -21,6 +22,7 @@ export const ActivateRangeSlider = ({
   value: [low, high],
   min = 0,
   max = 150,
+  disabled,
 }: Props) => {
   return (
     <Flex gap={4}>
@@ -29,10 +31,12 @@ export const ActivateRangeSlider = ({
         onChange={(e) => {
           onChange([e.target.checked ? min : null, high]);
         }}
+        isDisabled={disabled}
       >
         <Text minW='7'>{low?.toString() ?? '-'}</Text>
       </Checkbox>
       <RangeSlider
+        isDisabled={disabled}
         defaultValue={[10, 30]}
         min={0}
         max={150}
@@ -61,6 +65,7 @@ export const ActivateRangeSlider = ({
           onChange([low, e.target.checked ? max : null]);
         }}
         ml='3'
+        isDisabled={disabled}
       >
         <Text minW='7'>{high?.toString() ?? '-'}</Text>
       </Checkbox>
