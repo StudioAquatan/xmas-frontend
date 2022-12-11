@@ -28,6 +28,51 @@ interface Props {
   isDisabled?: boolean;
 }
 
+export const getRangeText = (rule: PartialRule) => {
+  const hasRange = (min: number | null, max: number | null) => {
+    return !(min === null && max === null);
+  };
+  const range = (min: number | null, max: number | null) => {
+    if (!hasRange(min, max)) {
+      return '-';
+    } else {
+      return `[${min ?? ''},${max ?? ''}]`;
+    }
+  };
+
+  const chunks = [''];
+  if (hasRange(rule.minFav, rule.maxFav)) {
+    chunks.push(`Fav: ${range(rule.minFav, rule.maxFav)}`);
+  }
+  if (hasRange(rule.minRetweet, rule.maxRetweet)) {
+    chunks.push(`RT: ${range(rule.minRetweet, rule.maxRetweet)}`);
+  }
+  if (hasRange(rule.minReply, rule.maxReply)) {
+    chunks.push(`Rp: ${range(rule.minReply, rule.maxReply)}`);
+  }
+  if (hasRange(rule.minHashtag, rule.maxHashtag)) {
+    chunks.push(`#: ${range(rule.minHashtag, rule.maxHashtag)}`);
+  }
+  if (rule.sumTarget.length > 0) {
+    const map: Record<'fav' | 'retweet' | 'reply' | 'hashtag', string> = {
+      fav: 'F',
+      retweet: 'RT',
+      reply: 'Rp',
+      hashtag: '#',
+    };
+    chunks.push(
+      `${rule.sumTarget.map((t) => map[t]).join('+')}: ${range(
+        rule.minSum,
+        rule.maxSum
+      )}`
+    );
+  }
+  if (chunks.length === 1) {
+    chunks.push('N/A');
+  }
+  return chunks.join(' ');
+};
+
 export const RuleRangeSelector = ({ onChange, value, isDisabled }: Props) => {
   return (
     <VStack spacing={3} align='stretch'>
