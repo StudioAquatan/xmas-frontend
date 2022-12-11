@@ -28,12 +28,12 @@ export const RuleSumSelector = ({ onChange }: Props) => {
         <Tab textTransform='uppercase'>Hashtag</Tab>
       </TabList>
       <TabPanels>
-        <TabPanel>
+        <TabPanel padding={1}>
           <React.Suspense fallback={<Loading />}>
             <TweetList tweetIds={tweetIds} onSelect={setTweetIds} />
           </React.Suspense>
         </TabPanel>
-        <TabPanel>
+        <TabPanel padding={1}>
           <React.Suspense fallback={<Loading />}>
             <HashtagList hashtagIds={hashtagIds} onSelect={setHashtagIds} />
           </React.Suspense>

@@ -26,7 +26,8 @@ export const RuleEventSelector = ({ onChange }: Props) => {
 
   const handleTabChange = (index: number) => {
     if (index === 0) setType('none');
-    else if (index === 2) setType('hashtag');
+    else if (index === 1) setType('fav');
+    else setType('hashtag');
 
     setTweetIds([]);
     setHashtagIds([]);
@@ -49,10 +50,11 @@ export const RuleEventSelector = ({ onChange }: Props) => {
       </TabList>
       <TabPanels>
         <TabPanel />
-        <TabPanel>
+        <TabPanel padding={1}>
           <RadioGroup
             onChange={(type) => setType(type as RuleEventType)}
             value={eventType}
+            mx={3}
           >
             <HStack spacing={3}>
               <Radio value='fav'>Like</Radio>
@@ -64,7 +66,7 @@ export const RuleEventSelector = ({ onChange }: Props) => {
             <TweetList tweetIds={tweetIds} onSelect={setTweetIds} />
           </React.Suspense>
         </TabPanel>
-        <TabPanel>
+        <TabPanel padding={1}>
           <React.Suspense fallback={<Loading />}>
             <HashtagList hashtagIds={hashtagIds} onSelect={setHashtagIds} />
           </React.Suspense>
