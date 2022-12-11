@@ -13,18 +13,20 @@ import { useRecoilState } from 'recoil';
 import { resultAtom } from '../stores/atoms';
 
 export const RuleResultSelector = () => {
-  const [{ targetPattern, priority }, set] = useRecoilState(resultAtom);
+  const [{ targetPattern, priority, timeout }, set] =
+    useRecoilState(resultAtom);
   return (
     <HStack>
       <FormControl>
         <FormLabel>Priority</FormLabel>
         <NumberInput
-          inlineSize={20}
           value={priority}
+          min={0}
           onChange={(_str, num) => {
             set({
               targetPattern,
               priority: num,
+              timeout,
             });
           }}
         >
@@ -38,14 +40,36 @@ export const RuleResultSelector = () => {
       <FormControl>
         <FormLabel>Pattern</FormLabel>
         <NumberInput
-          inlineSize={20}
           value={targetPattern}
+          min={0}
           onChange={(_str, num) => {
             set({
               priority,
+              timeout,
               targetPattern: num,
             });
           }}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </FormControl>
+      <FormControl>
+        <FormLabel>Timeout (sec)</FormLabel>
+        <NumberInput
+          value={timeout ?? 0}
+          placeholder='sec'
+          onChange={(_str, num) => {
+            set({
+              priority,
+              timeout: num,
+              targetPattern,
+            });
+          }}
+          min={0}
         >
           <NumberInputField />
           <NumberInputStepper>

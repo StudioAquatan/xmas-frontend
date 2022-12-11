@@ -85,11 +85,15 @@ export const sumTypeSelectorAtom = atom<SumTypePartialProps>({
   },
 });
 
-export type ResultPartialProps = Pick<Rule, 'targetPattern' | 'priority'>;
+export type ResultPartialProps = Pick<
+  Rule,
+  'targetPattern' | 'priority' | 'timeout'
+>;
 export const resultAtom = atom<ResultPartialProps>({
   key: 'resultAtom',
   default: {
     targetPattern: 0,
     priority: 0,
+    timeout: 0,
   },
 });
