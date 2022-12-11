@@ -10,8 +10,8 @@ import {
 import React from 'react';
 
 interface Props {
-  onChange: (range: [number, number]) => unknown;
-  value: [number, number];
+  onChange: (range: [number | null, number | null]) => unknown;
+  value: [number | null, number | null];
   min?: number;
   max?: number;
 }
@@ -22,42 +22,38 @@ export const ActivateRangeSlider = ({
   min = 0,
   max = 150,
 }: Props) => {
-  const [hasLowValue, setHasLow] = React.useState(true);
-  const [hasHighValue, setHasHigh] = React.useState(true);
   return (
     <Flex gap={4}>
       <Checkbox
-        isChecked={hasLowValue}
+        isChecked={low !== null}
         onChange={(e) => {
-          setHasLow(e.target.checked);
-          onChange([min, hasHighValue ? high : max]);
+          onChange([e.target.checked ? min : null, high]);
         }}
       >
-        <Text minW='7'>{hasLowValue && low.toString()}</Text>
+        <Text minW='7'>{low?.toString()}</Text>
       </Checkbox>
       <RangeSlider
         defaultValue={[10, 30]}
         min={0}
         max={150}
-        value={[hasLowValue ? low : min, hasHighValue ? high : max]}
+        value={[low ?? min, high ?? max]}
         onChange={([l, h]) =>
-          onChange([hasLowValue ? l : min, hasHighValue ? h : max])
+          onChange([low === null ? null : l, high === null ? null : h])
         }
       >
         <RangeSliderTrack>
           <RangeSliderFilledTrack />
         </RangeSliderTrack>
-        {hasLowValue && <RangeSliderThumb boxSize={6} index={0} />}
-        {hasHighValue && <RangeSliderThumb boxSize={6} index={1} />}
+        {low !== null && <RangeSliderThumb boxSize={6} index={0} />}
+        {high !== null && <RangeSliderThumb boxSize={6} index={1} />}
       </RangeSlider>
       <Checkbox
-        isChecked={hasHighValue}
+        isChecked={high !== null}
         onChange={(e) => {
-          setHasHigh(e.target.checked);
-          onChange([hasLowValue ? low : min, max]);
+          onChange([low, e.target.checked ? max : null]);
         }}
       >
-        <Text minW='7'>{hasHighValue && high.toString()}</Text>
+        <Text minW='7'>{high?.toString()}</Text>
       </Checkbox>
     </Flex>
   );
