@@ -60,6 +60,10 @@ export const RuleModal = () => {
     setOpen(false);
     resetRule();
   };
+
+  React.useEffect(() => {
+    resetRule();
+  }, [isOpen]);
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size='2xl'>
       <ModalOverlay />

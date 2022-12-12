@@ -31,8 +31,20 @@ export const ruleFinalizeSelector = selector<Omit<Rule, 'id' | 'ruleId'>>({
 
     return rule;
   },
-  set: ({ set }, rule) => {
-    if (rule instanceof DefaultValue) return;
+  set: ({ set, reset }, rule) => {
+    if (rule instanceof DefaultValue) {
+      reset(eventSelectorAtom);
+      reset(eventTypeAtom);
+      reset(sourceSelectorAtom);
+      reset(favRangeSelectorAtom);
+      reset(retweetRangeSelectorAtom);
+      reset(replyRangeSelectorAtom);
+      reset(hashtagRangeSelectorAtom);
+      reset(sumRangeSelectorAtom);
+      reset(sumTypeSelectorAtom);
+      reset(resultAtom);
+      return;
+    }
 
     set(eventTypeAtom, { event: rule.event });
     set(eventSelectorAtom, {
