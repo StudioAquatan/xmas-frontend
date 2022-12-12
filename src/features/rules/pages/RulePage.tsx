@@ -1,7 +1,9 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 import { RecoilRoot, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { Loading } from '../../../components/Loading';
 import { RuleIdSelector } from '../components/RuleIdSelector';
+import { RuleList } from '../components/RuleList';
 import { RuleModal } from '../components/RuleModal';
 import { ruleEditorModeAtom, ruleEditorOpenAtom } from '../stores/atoms';
 import { ruleFinalizeSelector } from '../stores/finalize';
@@ -29,6 +31,9 @@ export const RulePage = () => {
       <RuleIdSelector />
       <RuleAddButton />
       <RuleModal />
+      <React.Suspense fallback={<Loading />}>
+        <RuleList />
+      </React.Suspense>
     </RecoilRoot>
   );
 };

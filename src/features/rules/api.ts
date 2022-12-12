@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { fetchApi } from '../../lib/fetch';
 
 export type RuleEventType = 'none' | 'fav' | 'retweet' | 'reply' | 'hashtag';
@@ -31,7 +31,7 @@ export type RuleList = Rule[];
 export type AllRuleMap = Record<string, RuleList>;
 
 export const useAllRules = () => {
-  return useSWR<AllRuleMap>('/rules');
+  return useSWR<AllRuleMap>('/api/rules');
 };
 
 export const addRule = async (rule: Omit<Rule, 'id'>) => {
@@ -44,6 +44,7 @@ export const addRule = async (rule: Omit<Rule, 'id'>) => {
     },
   });
   if (!ok) throw new Error('Error');
+  mutate('/api/rules');
 };
 
 export const editRule = async (rule: Rule) => {
@@ -56,4 +57,5 @@ export const editRule = async (rule: Rule) => {
     },
   });
   if (!ok) throw new Error('Error');
+  mutate('/api/rules');
 };

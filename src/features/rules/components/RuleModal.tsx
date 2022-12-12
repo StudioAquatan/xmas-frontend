@@ -9,7 +9,12 @@ import {
   ModalFooter,
 } from '@chakra-ui/react';
 import React from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from 'recoil';
 import { addRule, editRule } from '../api';
 import {
   ruleEditorModeAtom,
@@ -55,11 +60,16 @@ export const RuleModal = () => {
   const [isOpen, setOpen] = useRecoilState(ruleEditorOpenAtom);
   const mode = useRecoilValue(ruleEditorModeAtom);
   const ruleId = useRecoilValue(ruleIdAtom);
+  const setFormValue = useSetRecoilState(ruleFinalizeSelector);
 
   const handleClose = () => {
     setOpen(false);
     resetRule();
   };
+
+  React.useEffect(() => {
+    if (mode.type === 'edit') setFormValue(mode.rule);
+  }, [mode]);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size='2xl'>
