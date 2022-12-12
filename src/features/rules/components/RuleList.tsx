@@ -18,6 +18,12 @@ import {
   ruleEditorOpenAtom,
   ruleIdAtom,
 } from '../stores/atoms';
+import {
+  getEventText,
+  getRangeText,
+  getResultText,
+  getSourceText,
+} from '../stores/text';
 
 export const RuleList = () => {
   const { data } = useAllRules();
@@ -42,12 +48,16 @@ export const RuleList = () => {
             <Th>Source</Th>
             <Th>Condition</Th>
             <Th>Result</Th>
+            <Th>Op.</Th>
           </Tr>
         </Thead>
         <Tbody>
           {filteredRule.map((rule) => (
             <Tr key={rule.id}>
-              <Td>{rule.id}</Td>
+              <Td>{getEventText(rule)}</Td>
+              <Td>{getSourceText(rule)}</Td>
+              <Td>{getRangeText(rule)}</Td>
+              <Td>{getResultText(rule)}</Td>
               <Td>
                 <IconButton
                   variant='ghost'
