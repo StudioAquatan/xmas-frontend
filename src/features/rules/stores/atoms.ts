@@ -97,3 +97,23 @@ export const resultAtom = atom<ResultPartialProps>({
     timeout: 0,
   },
 });
+
+export const ruleIdAtom = atom<number>({
+  key: 'ruleIdAtom',
+  default: 0,
+});
+
+export type RuleEditorMode =
+  | {
+      type: 'edit';
+      rule: Rule;
+    }
+  | { type: 'add' };
+export const ruleEditorModeAtom = atom<RuleEditorMode>({
+  key: 'ruleEditorModeAtom',
+  default: { type: 'add' },
+});
+export const ruleEditorOpenAtom = atom<boolean>({
+  key: 'ruleEditorOpenAtom',
+  default: false,
+});

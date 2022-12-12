@@ -11,6 +11,7 @@ import {
 import * as React from 'react';
 import { AccountsPage } from './features/accounts';
 import { HashtagMonitorsPage, TweetMonitorsPage } from './features/monitors';
+import { RulePage } from './features/rules/pages/RulePage';
 
 export const App: React.FC = () => {
   return (
@@ -18,7 +19,7 @@ export const App: React.FC = () => {
       <Heading marginY='1.5'>Illmination Controller</Heading>
       <Divider />
 
-      <Tabs>
+      <Tabs isLazy>
         <TabList>
           <Tab>Account</Tab>
           <Tab>Devices</Tab>
@@ -34,6 +35,9 @@ export const App: React.FC = () => {
           <TabPanel>
             <TweetMonitorsPage />
             <HashtagMonitorsPage />
+          </TabPanel>
+          <TabPanel>
+            <RulePage />
           </TabPanel>
         </TabPanels>
       </Tabs>

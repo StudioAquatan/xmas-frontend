@@ -45,3 +45,15 @@ export const addRule = async (rule: Omit<Rule, 'id'>) => {
   });
   if (!ok) throw new Error('Error');
 };
+
+export const editRule = async (rule: Rule) => {
+  const body = JSON.stringify(rule);
+  const { ok } = await fetchApi(`/api/rules/${rule.ruleId}/${rule.id}`, {
+    body,
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!ok) throw new Error('Error');
+};
