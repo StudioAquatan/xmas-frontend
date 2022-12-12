@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { fetchApi } from '../../lib/fetch';
 
 export interface TweetMonitor {
@@ -17,6 +17,7 @@ export const addMonitorTweet = async (id: string) => {
     method: 'PUT',
   });
   if (!res.ok) throw new Error('Operation failed');
+  mutate('/api/twitter/monitor/tweet');
 };
 
 export interface HashtagMonitor {
@@ -36,4 +37,5 @@ export const addMonitorHashtag = async (hashtag: string) => {
     headers: { 'Content-Type': 'application/json' },
   });
   if (!res.ok) throw new Error('Operation failed');
+  mutate('/api/twitter/monitor/hashtag');
 };

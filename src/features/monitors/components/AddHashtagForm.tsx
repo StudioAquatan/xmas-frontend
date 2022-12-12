@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { BsHash } from 'react-icons/bs';
-import { mutate } from 'swr';
 import { addMonitorHashtag } from '..';
 
 export const AddHashtagForm = () => {
@@ -20,7 +19,6 @@ export const AddHashtagForm = () => {
     setLoading(true);
     await addMonitorHashtag(hashtag);
     setLoading(false);
-    mutate('/api/twitter/monitor/hashtag');
     toast({
       title: `#${hashtag} added`,
       status: 'success',
