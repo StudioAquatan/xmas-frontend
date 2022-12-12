@@ -12,6 +12,7 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import { resultAtom } from '../stores/atoms';
 
+const wrapNaN = (x) => (isNaN(x) ? 0 : x);
 export const RuleResultSelector = () => {
   const [{ targetPattern, priority, timeout }, set] =
     useRecoilState(resultAtom);
@@ -25,7 +26,7 @@ export const RuleResultSelector = () => {
           onChange={(_str, num) => {
             set({
               targetPattern,
-              priority: num,
+              priority: wrapNaN(num),
               timeout,
             });
           }}
@@ -46,7 +47,7 @@ export const RuleResultSelector = () => {
             set({
               priority,
               timeout,
-              targetPattern: num,
+              targetPattern: wrapNaN(num),
             });
           }}
         >
@@ -65,7 +66,7 @@ export const RuleResultSelector = () => {
           onChange={(_str, num) => {
             set({
               priority,
-              timeout: num,
+              timeout: wrapNaN(num),
               targetPattern,
             });
           }}
