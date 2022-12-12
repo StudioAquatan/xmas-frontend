@@ -6,6 +6,7 @@ import {
   ChakraProvider,
   Container,
 } from '@chakra-ui/react';
+import { ConfirmContextProvider } from 'chakra-confirm';
 import React from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { SWRConfig, Fetcher } from 'swr';
@@ -32,11 +33,15 @@ export const AppProvider: React.FC<React.PropsWithChildren> = ({
 }) => {
   return (
     <ChakraProvider>
-      <SWRConfig value={{ fetcher, shouldRetryOnError: false, suspense: true }}>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          {children}
-        </ErrorBoundary>
-      </SWRConfig>
+      <ConfirmContextProvider>
+        <SWRConfig
+          value={{ fetcher, shouldRetryOnError: false, suspense: true }}
+        >
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            {children}
+          </ErrorBoundary>
+        </SWRConfig>
+      </ConfirmContextProvider>
     </ChakraProvider>
   );
 };

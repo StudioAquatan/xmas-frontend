@@ -59,3 +59,16 @@ export const editRule = async (rule: Rule) => {
   if (!ok) throw new Error('Error');
   mutate('/api/rules');
 };
+
+export const deleteRule = async (rule: Rule) => {
+  const body = JSON.stringify(rule);
+  const { ok } = await fetchApi(`/api/rules/${rule.ruleId}/${rule.id}`, {
+    body,
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!ok) throw new Error('Error');
+  mutate('/api/rules');
+};

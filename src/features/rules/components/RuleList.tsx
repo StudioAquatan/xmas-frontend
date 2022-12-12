@@ -9,10 +9,11 @@ import {
   Td,
   IconButton,
 } from '@chakra-ui/react';
+import { useConfirmDelete } from 'chakra-confirm';
 import React from 'react';
-import { BsPencil } from 'react-icons/bs';
+import { BsPencil, BsTrash } from 'react-icons/bs';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { Rule, useAllRules } from '../api';
+import { deleteRule, Rule, useAllRules } from '../api';
 import {
   ruleEditorModeAtom,
   ruleEditorOpenAtom,
@@ -33,10 +34,15 @@ export const RuleList = () => {
   }, [ruleId, data]);
   const setMode = useSetRecoilState(ruleEditorModeAtom);
   const setOpen = useSetRecoilState(ruleEditorOpenAtom);
+  const confirm = useConfirmDelete();
 
   const handleEdit = (rule: Rule) => {
     setMode({ type: 'edit', rule });
     setOpen(true);
+  };
+
+  const handleDelete = async (rule: Rule) => {
+    if (await confirm({ title: 'Delete?' })) await deleteRule(rule);
   };
 
   return filteredRule.length > 0 ? (
@@ -64,6 +70,12 @@ export const RuleList = () => {
                   aria-label='Edit'
                   onClick={() => handleEdit(rule)}
                   icon={<BsPencil />}
+                />
+                <IconButton
+                  variant='ghost'
+                  aria-label='Delete'
+                  onClick={() => handleDelete(rule)}
+                  icon={<BsTrash />}
                 />
               </Td>
             </Tr>
