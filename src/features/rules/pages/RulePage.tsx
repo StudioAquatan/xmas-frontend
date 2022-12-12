@@ -1,15 +1,18 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
-import { RecoilRoot, useSetRecoilState } from 'recoil';
+import { RecoilRoot, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { RuleIdSelector } from '../components/RuleIdSelector';
 import { RuleModal } from '../components/RuleModal';
 import { ruleEditorModeAtom, ruleEditorOpenAtom } from '../stores/atoms';
+import { ruleFinalizeSelector } from '../stores/finalize';
 
 const RuleAddButton = () => {
   const setMode = useSetRecoilState(ruleEditorModeAtom);
   const setOpen = useSetRecoilState(ruleEditorOpenAtom);
+  const resetRule = useResetRecoilState(ruleFinalizeSelector);
 
   const handleAdd = () => {
+    resetRule();
     setMode({ type: 'add' });
     setOpen(true);
   };
