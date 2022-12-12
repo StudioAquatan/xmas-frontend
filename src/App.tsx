@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import * as React from 'react';
 import { AccountsPage } from './features/accounts';
+import { DevicePage } from './features/devices/pages/DevicePage';
 import { HashtagMonitorsPage, TweetMonitorsPage } from './features/monitors';
 import { RulePage } from './features/rules/pages/RulePage';
 
@@ -31,7 +32,9 @@ export const App: React.FC = () => {
           <TabPanel>
             <AccountsPage />
           </TabPanel>
-          <TabPanel></TabPanel>
+          <TabPanel>
+            <DevicePage />
+          </TabPanel>
           <TabPanel>
             <TweetMonitorsPage />
             <HashtagMonitorsPage />
