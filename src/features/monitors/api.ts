@@ -20,6 +20,14 @@ export const addMonitorTweet = async (id: string) => {
   mutate('/api/twitter/monitor/tweet');
 };
 
+export const deleteMonitorTweet = async (id: string) => {
+  const res = await fetchApi(`/api/twitter/monitor/tweet/${id}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('Operation failed');
+  mutate('/api/twitter/monitor/tweet');
+};
+
 export interface HashtagMonitor {
   id: number;
   hashtag: string;
@@ -35,6 +43,14 @@ export const addMonitorHashtag = async (hashtag: string) => {
     method: 'PUT',
     body: JSON.stringify({ hashtag }),
     headers: { 'Content-Type': 'application/json' },
+  });
+  if (!res.ok) throw new Error('Operation failed');
+  mutate('/api/twitter/monitor/hashtag');
+};
+
+export const deleteMonitorHashtag = async (hashtagId: number) => {
+  const res = await fetchApi(`/api/twitter/monitor/hashtag/${hashtagId}`, {
+    method: 'DELETE',
   });
   if (!res.ok) throw new Error('Operation failed');
   mutate('/api/twitter/monitor/hashtag');

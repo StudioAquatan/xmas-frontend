@@ -2,6 +2,7 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
+  IconButton,
   Link,
   Table,
   TableContainer,
@@ -12,6 +13,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import React from 'react';
+import { BsTrash } from 'react-icons/bs';
 import { useHashtagMonitors } from '..';
 
 interface Props {
@@ -57,13 +59,12 @@ export const HashtagList = ({ onSelect, onDelete, hashtagIds }: Props) => {
                 <Td isNumeric>{count}</Td>
                 {onDelete && (
                   <Td>
-                    <Button
-                      colorScheme='red'
-                      size='sm'
+                    <IconButton
+                      variant='ghost'
+                      aria-label='Delete'
                       onClick={() => onDelete(id)}
-                    >
-                      Delete
-                    </Button>
+                      icon={<BsTrash />}
+                    />
                   </Td>
                 )}
               </Tr>

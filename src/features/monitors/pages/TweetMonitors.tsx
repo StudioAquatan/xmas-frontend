@@ -1,9 +1,24 @@
-import { Card, CardBody, CardHeader, Heading } from '@chakra-ui/react';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  useToast,
+} from '@chakra-ui/react';
+import { useConfirmDelete } from 'chakra-confirm';
 import React from 'react';
-import { AddTweetForm, TweetList } from '..';
+import { AddTweetForm, deleteMonitorTweet, TweetList } from '..';
 import { Loading } from '../../../components/Loading';
 
 export const TweetMonitorsPage = () => {
+  const confirm = useConfirmDelete();
+  const toast = useToast({ status: 'success' });
+  const handleDelete = async (id: string) => {
+    if (await confirm()) {
+      await deleteMonitorTweet(id);
+      toast({ title: 'Deleted' });
+    }
+  };
   return (
     <Card marginY={3}>
       <CardHeader>
@@ -14,7 +29,7 @@ export const TweetMonitorsPage = () => {
       <CardBody>
         <AddTweetForm />
         <React.Suspense fallback={<Loading />}>
-          <TweetList />
+          <TweetList onDelete={handleDelete} />
         </React.Suspense>
       </CardBody>
     </Card>

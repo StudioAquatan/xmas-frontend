@@ -1,7 +1,7 @@
 import {
-  Button,
   Checkbox,
   CheckboxGroup,
+  IconButton,
   Link,
   Table,
   TableContainer,
@@ -12,6 +12,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import React from 'react';
+import { BsTrash } from 'react-icons/bs';
 import { useTweetMonitors } from '..';
 
 interface Props {
@@ -54,13 +55,12 @@ export const TweetList = ({ onSelect, onDelete, tweetIds }: Props) => {
                 <Td isNumeric>{replyCount}</Td>
                 {onDelete && (
                   <Td>
-                    <Button
-                      colorScheme='red'
-                      size='sm'
+                    <IconButton
+                      variant='ghost'
+                      aria-label='Delete'
                       onClick={() => onDelete(tweetId)}
-                    >
-                      Delete
-                    </Button>
+                      icon={<BsTrash />}
+                    />
                   </Td>
                 )}
               </Tr>
