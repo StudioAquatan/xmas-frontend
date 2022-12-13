@@ -17,3 +17,12 @@ export const updateRuleId = async (deviceId: string, ruleId: number) => {
   if (!ok) throw new Error('Error');
   mutate('/api/devices');
 };
+
+export const updatePattern = async (deviceId: string, pattern: number) => {
+  const { ok } = await fetchApi(
+    `/api/devices/${deviceId}/pattern?pattern=${pattern}`,
+    { method: 'POST' }
+  );
+  if (!ok) throw new Error('Error');
+  mutate('/api/devices');
+};

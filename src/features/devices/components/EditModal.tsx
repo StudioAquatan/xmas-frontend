@@ -15,10 +15,11 @@ import {
   NumberInputField,
   NumberInputStepper,
   useToast,
+  HStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useResetRecoilState, useRecoilValue } from 'recoil';
-import { updateRuleId, useDeviceList } from '../api';
+import { updatePattern, updateRuleId, useDeviceList } from '../api';
 import { deviceEditModalAtom } from '../stores/atom';
 
 export const DeviceEditModal = () => {
@@ -26,6 +27,7 @@ export const DeviceEditModal = () => {
   const { deviceId, isOpen } = useRecoilValue(deviceEditModalAtom);
   const { data } = useDeviceList();
   const [ruleId, setRuleId] = React.useState(0);
+  const [patternId, setPatternId] = React.useState(0);
   const toast = useToast();
 
   const handleClose = () => {
@@ -51,6 +53,15 @@ export const DeviceEditModal = () => {
     }
   };
 
+  const handlePattern = async () => {
+    try {
+      await updatePattern(deviceId, patternId);
+      toast({ title: 'Success', status: 'success' });
+    } catch (e) {
+      toast({ title: 'Failed', description: e.message, status: 'error' });
+    }
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size='2xl'>
       <ModalOverlay />
@@ -71,6 +82,24 @@ export const DeviceEditModal = () => {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
+          </FormControl>
+
+          <FormControl>
+            <FormLabel>Pattern</FormLabel>
+            <HStack>
+              <NumberInput
+                value={patternId}
+                onChange={(_str, num) => setPatternId(num)}
+                min={0}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              <Button onClick={handlePattern}>Apply</Button>
+            </HStack>
           </FormControl>
         </ModalBody>
         <ModalFooter>
