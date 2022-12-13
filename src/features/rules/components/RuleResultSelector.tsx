@@ -10,9 +10,9 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useRecoilState } from 'recoil';
+import { wrapNaN } from '../../../lib/number';
 import { resultAtom } from '../stores/atoms';
 
-const wrapNaN = (x) => (isNaN(x) ? 0 : x);
 export const RuleResultSelector = () => {
   const [{ targetPattern, priority, timeout }, set] =
     useRecoilState(resultAtom);
