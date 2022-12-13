@@ -1,12 +1,5 @@
-import {
-  Box,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Spinner,
-} from '@chakra-ui/react';
+import { Box, Input, InputGroup } from '@chakra-ui/react';
 import React from 'react';
-import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { extractTweetId } from '../lib/twitter';
 
 interface Props {
@@ -37,13 +30,7 @@ export const TweetSelector = ({ onChange }: Props) => {
           onChange={(e) => setUrl(e.target.value)}
           value={url}
         />
-        <InputRightElement>
-          {tweetId && !loaded && <Spinner />}
-        </InputRightElement>
       </InputGroup>
-      {tweetId && showPreview && (
-        <TwitterTweetEmbed tweetId={tweetId} onLoad={() => setLoaded(true)} />
-      )}
     </Box>
   );
 };
